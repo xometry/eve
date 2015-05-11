@@ -269,15 +269,17 @@ def document_etag(value):
 
     :param value: the value to compute the ETag with.
 
+    .. versionchanged:: 0.5.4
+       Use json_encoder_class. See #624.
+
     .. versionchanged:: 0.0.4
        Using bson.json_util.dumps over str(value) to make etag computation
        consistent between different runs and/or server instances (#16).
     """
     h = hashlib.sha1()
-    with app.app_context():
-        json_encoder = app.data.json_encoder_class()
-        h.update(dumps(value, sort_keys=True,
-                       default=json_encoder.default).encode('utf-8'))
+    json_encoder = app.data.json_encoder_class()
+    h.update(dumps(value, sort_keys=True,
+                   default=json_encoder.default).encode('utf-8'))
     return h.hexdigest()
 
 
