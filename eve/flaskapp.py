@@ -546,10 +546,14 @@ class Eve(Flask, Events):
         settings['datasource'].setdefault('filter', None)
         settings['datasource'].setdefault('default_sort', None)
 
-        if len(schema) and settings['allow_unknown'] is False:
+        projection = settings['datasource'].get('projection')
+        projection = projection or {}
+        exclusion = any((v for k, v in projection.items() if v == 0))
+
+        if not exclusion and len(schema) and \
+           settings['allow_unknown'] is False:
             # enable retrieval of actual schema fields only. Eventual db
             # fields not included in the schema won't be returned.
-            projection = {}
             # despite projection, automatic fields are always included.
             projection[self.config['ID_FIELD']] = 1
             projection[self.config['LAST_UPDATED']] = 1
