@@ -9,6 +9,9 @@ In Development
 Version 0.6.2
 ~~~~~~~~~~~~~
 
+- New ``get_internal`` and ``getitem_internal`` functions can be used for
+  internal GET calls. These methods are not rate limited, authentication is not
+  checked and pre-request events are not raised.
 - New: Query parameters not recognised by Eve are now returned in HATEOAS URLs
   (Mugur Rus).
 - New: ``OPLOG_CHANGE_METHODS`` is a list of HTTP methods which operations will
